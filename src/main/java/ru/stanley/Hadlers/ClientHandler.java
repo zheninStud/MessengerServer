@@ -38,7 +38,7 @@ public class ClientHandler extends Thread {
                 String messageType = message.getType();
 
                 switch (messageType) {
-//                    case "AUTH":
+                    case "AUTH":
 //                        // Обработка авторизации
 //                        String username = message.getData().getString("username");
 //                        String password = message.getData().getString("password");
@@ -47,7 +47,7 @@ public class ClientHandler extends Thread {
 //                        } else {
 //                            out.println(new Message("AUTH_FAIL", new JSONObject()).toJSON());
 //                        }
-//                        break;
+                        break;
                     case "REGISTER":
                         // Получаем данные из сообщения
                         String newUsername = message.getData().getString("username");
@@ -56,16 +56,16 @@ public class ClientHandler extends Thread {
                         String newPhone = message.getData().getString("phone");
 
                         // Проверяем, существует ли пользователь с таким именем или электронной почтой
-                        if (!database.isUserExists(newUsername) && !database.isEmailExists(newEmail)) {
-                            // Регистрируем пользователя
-                            database.registerUser(newUsername, newPassword, newEmail, newPhone);
-
-                            // Отправляем сообщение об успешной регистрации
-                            out.println(MessageType.REGISTER_SUCCESS.createJsonObject());
-                        } else {
-                            // Отправляем сообщение о неудачной регистрации
-                            out.println(MessageType.REGISTER_FAIL.createJsonObject());
-                        }
+//                        if (!database.isUserExists(newUsername) && !database.isEmailExists(newEmail)) {
+//                            // Регистрируем пользователя
+//                            database.registerUser(newUsername, newPassword, newEmail, newPhone);
+//
+//                            // Отправляем сообщение об успешной регистрации
+//                            out.println(MessageType.REGISTER_SUCCESS.createJsonObject());
+//                        } else {
+//                            // Отправляем сообщение о неудачной регистрации
+//                            out.println(MessageType.REGISTER_FAIL.createJsonObject());
+//                        }
                         break;
                 }
             }

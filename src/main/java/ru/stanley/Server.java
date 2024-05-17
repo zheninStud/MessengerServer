@@ -33,6 +33,8 @@ public class Server {
             SSLServerSocket sslServerSocket = (SSLServerSocket) sslServerSocketFactory.createServerSocket(PORT);
             System.out.println("Сервер запущен на порту " + PORT);
 
+            databaseConnection.isUserExists("test");
+
             while (true) {
                 SSLSocket clientSocket = (SSLSocket) sslServerSocket.accept();
                 System.out.println("Новое подключение: " + clientSocket);
@@ -40,6 +42,8 @@ public class Server {
                 ClientHandler clientHandler = new ClientHandler(clientSocket);
                 clientHandler.start();
             }
+
+
         } catch (IOException | NoSuchAlgorithmException | KeyStoreException | CertificateException | UnrecoverableKeyException | KeyManagementException e) {
             e.printStackTrace();
         }

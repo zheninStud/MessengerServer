@@ -17,15 +17,20 @@ public class DatabaseConnection {
     private RowSetFactory factory;
     private Connection connection;
 
+    private String url = "jdbc:mysql://localhost:3306/mydatabase";
+    private String user = "username";
+    private String password = "password";
+
     public DatabaseConnection() throws SQLException {
 
         checkPath();
         // connection = DriverManager.getConnection("jdbc:sqlite:" + pathDb);
-        connection = DriverManager.getConnection("jdbc:sqlite:mydatabase.db");
-        System.out.println("Соединение с локальной базой данных установлено.");
+        connection = DriverManager.getConnection(url, user, password);
+        System.out.println("Соединение с mysql базой данных установлено.");
 
         executeStatement(SQLQuery.CREATE_TABLE_USER);
 
+        //executeStatement(SQLQuery.INSERT_USER, "Stanley000", "1310aac401a6eeac6def8d9f6a8ef852:6ab102125cd860d8c23528a7d65d6528881e7f2f2e43e094642d19ab0318ebc3", "test@mail.ru", "89178060015");
 
     }
 
@@ -161,6 +166,9 @@ public class DatabaseConnection {
     }
 
     public boolean isUserExists(String newUsername) {
+        ResultSet resultSet = executeResultStatement(SQLQuery.SELECT_CHECK_USER, newUsername);
+
+        System.out.println(resultSet);
 
         return true;
     }

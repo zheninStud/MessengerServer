@@ -13,7 +13,11 @@ public enum SQLQuery {
     ),
 
     INSERT_USER(
-            "INSERT INTO 'User' (userName, passwordHash, email, phone) VALUES (?, ?, ?, ?)"
+            "INSERT INTO User (userName, passwordHash, email, phone) VALUES (?, ?, ?, ?)"
+    ),
+
+    SELECT_CHECK_USER(
+            "SELECT * FROM User where userName = ?"
     );
 
     private final String mysql;
