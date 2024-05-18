@@ -14,6 +14,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     implementation("org.json:json:20231013")
     implementation("mysql:mysql-connector-java:8.0.28")
+    implementation("org.bouncycastle:bcprov-jdk18on:1.78.1")
 }
 
 tasks.test {

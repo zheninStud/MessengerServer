@@ -3,6 +3,7 @@ package ru.stanley.Hadlers;
 import org.json.JSONObject;
 import ru.stanley.Database.DatabaseConnection;
 import ru.stanley.Models.Message;
+import ru.stanley.Models.User;
 import ru.stanley.Server;
 import ru.stanley.Utils.MessageType;
 
@@ -11,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 public class ClientHandler extends Thread {
 
@@ -29,51 +31,92 @@ public class ClientHandler extends Thread {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
+            MessageType outMessageType;
+            JSONObject jsonMessage;
+
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 System.out.println("Сообщение от клиента: " + inputLine);
-                out.println("Сервер получил ваше сообщение: " + inputLine);
 
                 Message message = Message.fromJSON(inputLine);
                 String messageType = message.getType();
 
                 switch (messageType) {
                     case "AUTH":
-//                        // Обработка авторизации
-//                        String username = message.getData().getString("username");
-//                        String password = message.getData().getString("password");
-//                        if (database.isValidUser(username, password)) {
-//                            out.println(new Message("AUTH_SUCCESS", new JSONObject()).toJSON());
-//                        } else {
-//                            out.println(new Message("AUTH_FAIL", new JSONObject()).toJSON());
-//                        }
+                        String username = message.getData().getString("username");
+                        String password = message.getData().getString("passwordHash");
+
+                        User user = database.isValidUser(username, password);
+                        if (user != null) {
+                            outMessageType = MessageType.AUTH_SUCCESS;
+                            jsonMessage = outMessageType.createJsonObject();
+
+                            jsonMessage.getJSONObject("data").put("userId", user.getUserId());
+                            jsonMessage.getJSONObject("data").put("username", user.getUserName());
+                            jsonMessage.getJSONObject("data").put("email", user.getEmail());
+                            jsonMessage.getJSONObject("data").put("phone", user.getPhone());
+
+                            out.println(outMessageType.createMessage(jsonMessage).toJSON());
+                        } else {
+                            out.println(new Message(MessageType.AUTH_FAIL.createJsonObject()).toJSON());
+                        }
                         break;
                     case "REGISTER":
-                        // Получаем данные из сообщения
                         String newUsername = message.getData().getString("username");
-                        String newPassword = message.getData().getString("password");
+                        String newPasswordHash = message.getData().getString("passwordHash");
+                        String saltRegister = message.getData().getString("salt");
                         String newEmail = message.getData().getString("email");
                         String newPhone = message.getData().getString("phone");
 
-                        // Проверяем, существует ли пользователь с таким именем или электронной почтой
-//                        if (!database.isUserExists(newUsername) && !database.isEmailExists(newEmail)) {
-//                            // Регистрируем пользователя
-//                            database.registerUser(newUsername, newPassword, newEmail, newPhone);
-//
-//                            // Отправляем сообщение об успешной регистрации
-//                            out.println(MessageType.REGISTER_SUCCESS.createJsonObject());
-//                        } else {
-//                            // Отправляем сообщение о неудачной регистрации
-//                            out.println(MessageType.REGISTER_FAIL.createJsonObject());
-//                        }
+                        outMessageType = MessageType.REGISTER_FAIL;
+                        jsonMessage = outMessageType.createJsonObject();
+
+                        if (database.isUserExists(newUsername)) {
+                            jsonMessage.getJSONObject("data").put("errorCode", "Username");
+                            out.println(outMessageType.createMessage(jsonMessage).toJSON());
+                            return;
+                        }
+
+                        if (database.isEmailExists(newEmail)) {
+                            jsonMessage.getJSONObject("data").put("errorCode", "Email");
+                            out.println(outMessageType.createMessage(jsonMessage).toJSON());
+                            return;
+                        }
+
+                        if (database.isPhoneExists(newPhone)) {
+                            jsonMessage.getJSONObject("data").put("errorCode", "Phone");
+                            out.println(outMessageType.createMessage(jsonMessage).toJSON());
+                            return;
+                        }
+
+                        if (!database.registerUser(newUsername, newPasswordHash, saltRegister, newEmail, newPhone)) {
+                            jsonMessage.getJSONObject("data").put("errorCode", "MySQL");
+                            out.println(outMessageType.createMessage(jsonMessage).toJSON());
+                            return;
+                        }
+
+                        out.println(new Message(MessageType.REGISTER_SUCCESS.createJsonObject()).toJSON());
                         break;
+                    case "GET_SALT":
+                        String usernameSalt = message.getData().getString("username");
+                        String salt = database.getUserSalt(usernameSalt);
+                        if (salt != null) {
+                            outMessageType = MessageType.SET_SALT;
+                            jsonMessage = outMessageType.createJsonObject();
+
+                            jsonMessage.getJSONObject("data").put("salt", salt);
+
+                            out.println(outMessageType.createMessage(jsonMessage).toJSON());
+                        }
+                        break;
+
                 }
             }
 
             in.close();
             out.close();
             clientSocket.close();
-        } catch (IOException e) {
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
     }

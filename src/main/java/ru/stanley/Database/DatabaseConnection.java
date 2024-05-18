@@ -1,6 +1,8 @@
 package ru.stanley.Database;
 
+import ru.stanley.Models.User;
 import ru.stanley.Server;
+import ru.stanley.Utils.GOSTHashing;
 import ru.stanley.Utils.SQLQuery;
 
 import javax.sql.rowset.CachedRowSet;
@@ -23,8 +25,7 @@ public class DatabaseConnection {
 
     public DatabaseConnection() throws SQLException {
 
-        checkPath();
-        // connection = DriverManager.getConnection("jdbc:sqlite:" + pathDb);
+        //checkPath();
         connection = DriverManager.getConnection(url, user, password);
         System.out.println("Соединение с mysql базой данных установлено.");
 
@@ -165,19 +166,52 @@ public class DatabaseConnection {
         return factory.createCachedRowSet();
     }
 
-    public boolean isUserExists(String newUsername) {
-        ResultSet resultSet = executeResultStatement(SQLQuery.SELECT_CHECK_USER, newUsername);
+    public User isValidUser(String username, String passwordHash) throws SQLException {
+        ResultSet resultSet = executeResultStatement(SQLQuery.SELECT_USER, username);
+        if (resultSet.next()) {
+            String userId = String.valueOf(resultSet.getInt("userId"));
+            String userName = resultSet.getString("userName");
+            String dataPasswordHash = resultSet.getString("passwordHash");
+            String email = resultSet.getString("email");
+            String phone = resultSet.getString("phone");
 
-        System.out.println(resultSet);
-
-        return true;
+            if (dataPasswordHash.equals(passwordHash)) {
+                return new User(userId, userName, email, phone);
+            }
+        }
+        return null;
     }
 
-    public boolean isEmailExists(String newEmail) {
-
-        return true;
+    public boolean isUserExists(String newUsername) throws SQLException {
+        ResultSet resultSet = executeResultStatement(SQLQuery.SELECT_CHECK_NEWUSER_USERNAME, newUsername);
+        return resultSet.next();
     }
 
-    public void registerUser(String newUsername, String newPassword, String newEmail, String newPhone) {
+    public boolean isEmailExists(String newEmail) throws SQLException {
+        ResultSet resultSet = executeResultStatement(SQLQuery.SELECT_CHECK_NEWUSER_EMAIL, newEmail);
+        return resultSet.next();
+    }
+
+    public boolean isPhoneExists(String newPhone) throws SQLException {
+        ResultSet resultSet = executeResultStatement(SQLQuery.SELECT_CHECK_NEWUSER_PHONE, newPhone);
+        return resultSet.next();
+    }
+
+    public String getUserSalt(String username) throws SQLException {
+        ResultSet resultSet = executeResultStatement(SQLQuery.SELECT_USER_SALT, username);
+        if (resultSet.next()) {
+            return resultSet.getString("salt");
+        }
+        return null;
+    }
+
+    public boolean registerUser(String newUsername, String newPassword, String salt, String newEmail, String newPhone) {
+        int result = executeUpdateStatement(SQLQuery.INSERT_USER, newUsername, newPassword, salt, newEmail, newPhone);
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
