@@ -2,7 +2,6 @@ package ru.stanley.Database;
 
 import ru.stanley.Models.User;
 import ru.stanley.Server;
-import ru.stanley.Utils.GOSTHashing;
 import ru.stanley.Utils.SQLQuery;
 
 import javax.sql.rowset.CachedRowSet;
@@ -10,12 +9,10 @@ import javax.sql.rowset.RowSetFactory;
 import javax.sql.rowset.RowSetProvider;
 
 import java.sql.*;
-import java.net.URL;
 
 public class DatabaseConnection {
 
     private static final Server application = Server.getInstance();
-    private String pathDb;
     private RowSetFactory factory;
     private Connection connection;
 
@@ -24,30 +21,14 @@ public class DatabaseConnection {
     private String password = "password";
 
     public DatabaseConnection() throws SQLException {
-
-        //checkPath();
         connection = DriverManager.getConnection(url, user, password);
         System.out.println("Соединение с mysql базой данных установлено.");
 
         executeStatement(SQLQuery.CREATE_TABLE_USER);
-
-        //executeStatement(SQLQuery.INSERT_USER, "Stanley000", "1310aac401a6eeac6def8d9f6a8ef852:6ab102125cd860d8c23528a7d65d6528881e7f2f2e43e094642d19ab0318ebc3", "test@mail.ru", "89178060015");
-
     }
 
     public void disconnect() throws SQLException {
         connection.close();
-    }
-
-    private void checkPath() {
-        URL resourceUrl = application.getClass().getResource("databases/mydatabase.db");
-
-        if (resourceUrl != null) {
-            pathDb = resourceUrl.getPath();
-            System.out.println("Resource: " + pathDb);
-        } else {
-            System.out.println("Resource not found");
-        }
     }
 
     public void executeStatement(SQLQuery sql, Object... params) {
@@ -179,6 +160,20 @@ public class DatabaseConnection {
                 return new User(userId, userName, email, phone);
             }
         }
+        return null;
+    }
+
+    public User searchUser(String username) throws SQLException {
+        ResultSet resultSet = executeResultStatement(SQLQuery.SELECT_USER, username);
+        if (resultSet.next()) {
+            String userId = String.valueOf(resultSet.getInt("userId"));
+            String userName = resultSet.getString("userName");
+            String email = resultSet.getString("email");
+            String phone = resultSet.getString("phone");
+
+            return new User(userId, userName, email, phone);
+        }
+
         return null;
     }
 

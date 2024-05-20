@@ -33,6 +33,7 @@ public class ClientHandler extends Thread {
 
             MessageType outMessageType;
             JSONObject jsonMessage;
+            User user;
 
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
@@ -46,7 +47,7 @@ public class ClientHandler extends Thread {
                         String username = message.getData().getString("username");
                         String password = message.getData().getString("passwordHash");
 
-                        User user = database.isValidUser(username, password);
+                        user = database.isValidUser(username, password);
                         if (user != null) {
                             outMessageType = MessageType.AUTH_SUCCESS;
                             jsonMessage = outMessageType.createJsonObject();
@@ -109,7 +110,22 @@ public class ClientHandler extends Thread {
                             out.println(outMessageType.createMessage(jsonMessage).toJSON());
                         }
                         break;
+                    case "GET_USER":
+                        String usernameSearch = message.getData().getString("username");
+                        user = database.searchUser(usernameSearch);
+                        if (user != null) {
+                            outMessageType = MessageType.USER_SUCCESS;
+                            jsonMessage = outMessageType.createJsonObject();
 
+                            jsonMessage.getJSONObject("data").put("userId", user.getUserId());
+                            jsonMessage.getJSONObject("data").put("username", user.getUserName());
+                            jsonMessage.getJSONObject("data").put("email", user.getEmail());
+                            jsonMessage.getJSONObject("data").put("phone", user.getPhone());
+
+                            out.println(outMessageType.createMessage(jsonMessage).toJSON());
+                        } else {
+                            out.println(new Message(MessageType.USER_FAIL.createJsonObject()).toJSON());
+                        }
                 }
             }
 
