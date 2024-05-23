@@ -2,6 +2,7 @@ package ru.stanley.Hadlers;
 
 import org.json.JSONObject;
 import ru.stanley.Database.DatabaseConnection;
+import ru.stanley.Manager.ClientManager;
 import ru.stanley.Models.Message;
 import ru.stanley.Models.User;
 import ru.stanley.Server;
@@ -14,15 +15,25 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
+
 public class ClientHandler extends Thread {
 
-    private SSLSocket clientSocket;
+    private final SSLSocket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
+    private User user;
     private static final DatabaseConnection database = Server.getDatabaseConnection();
 
     public ClientHandler(SSLSocket socket) {
         this.clientSocket = socket;
+    }
+
+    public void sendMessage(Message message) {
+        out.println(message.toJSON());
+    }
+
+    public void sendMessage(String message) {
+        out.println(message);
     }
 
     @Override
@@ -34,6 +45,7 @@ public class ClientHandler extends Thread {
             MessageType outMessageType;
             JSONObject jsonMessage;
             User user;
+            ClientHandler client;
 
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
@@ -49,6 +61,8 @@ public class ClientHandler extends Thread {
 
                         user = database.isValidUser(username, password);
                         if (user != null) {
+                            this.user = user;
+                            ClientManager.addClient(user.getUserId(), this);
                             outMessageType = MessageType.AUTH_SUCCESS;
                             jsonMessage = outMessageType.createJsonObject();
 
@@ -126,6 +140,47 @@ public class ClientHandler extends Thread {
                         } else {
                             out.println(new Message(MessageType.USER_FAIL.createJsonObject()).toJSON());
                         }
+                    case "REGUEST_FRIEND":
+                        String userIdRequest = message.getData().getString("userId");
+                        String publicKeyRequest = message.getData().getString("publicKey");
+
+                        client = ClientManager.getClient(userIdRequest);
+
+                        if (client == null) {
+                            if (database.insertUserPublicKey(this.user.getUserId(), userIdRequest, publicKeyRequest)) {
+                                out.println(new Message(MessageType.REGUEST_FRIEND_SERVER.createJsonObject()).toJSON());
+                            }
+                        } else {
+                            outMessageType = MessageType.REGUEST_FRIEND_CLIENT;
+                            jsonMessage = outMessageType.createJsonObject();
+
+                            jsonMessage.getJSONObject("data").put("userId", this.user.getUserId());
+                            jsonMessage.getJSONObject("data").put("username", this.user.getUserName());
+                            jsonMessage.getJSONObject("data").put("email", this.user.getEmail());
+                            jsonMessage.getJSONObject("data").put("phone", this.user.getPhone());
+                            jsonMessage.getJSONObject("data").put("publicKey", publicKeyRequest);
+
+                            client.sendMessage(outMessageType.createMessage(jsonMessage));
+                        }
+                    case "REGUEST_FRIEND_CLIENT_TAKEN":
+                        String userIdTaken = message.getData().getString("userId");
+
+                        client = ClientManager.getClient(userIdTaken);
+
+                        outMessageType = MessageType.REGUEST_FRIEND_CLIENT_TAKEN_CLIENT;
+                        jsonMessage = outMessageType.createJsonObject();
+
+                        jsonMessage.getJSONObject("data").put("userId", this.user.getUserId());
+
+                        if (client == null) {
+                            if (database.insertPendingMessage(this.user.getUserId(), userIdTaken, outMessageType.createMessage(jsonMessage).toJSON())) {
+                                out.println(new Message(MessageType.REGUEST_FRIEND_CLIENT_TAKEN_SERVER.createJsonObject()).toJSON());
+                            }
+                        } else {
+                            client.sendMessage(outMessageType.createMessage(jsonMessage));
+                        }
+
+
                 }
             }
 

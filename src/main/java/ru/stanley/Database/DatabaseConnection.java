@@ -8,6 +8,10 @@ import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.RowSetFactory;
 import javax.sql.rowset.RowSetProvider;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+
 import java.sql.*;
 
 public class DatabaseConnection {
@@ -200,13 +204,44 @@ public class DatabaseConnection {
         return null;
     }
 
-    public boolean registerUser(String newUsername, String newPassword, String salt, String newEmail, String newPhone) {
-        int result = executeUpdateStatement(SQLQuery.INSERT_USER, newUsername, newPassword, salt, newEmail, newPhone);
+    public boolean insertUserPublicKey(String userIdSender, String userIdReceiver, String publicKey) throws SQLException {
+        ResultSet resultSet = executeResultStatement(SQLQuery.SELECT_USER_WITH_USERID, userIdSender);
+        if (resultSet.next()) {
+            ResultSet resultSet2 = executeResultStatement(SQLQuery.SELECT_USER_WITH_USERID, userIdReceiver);
 
-        if (result > 0) {
-            return true;
-        } else {
+            if (resultSet2.next()) {
+                int result = executeUpdateStatement(SQLQuery.INSERT_USER_PUBLIC_KEY, resultSet.getInt("id"), resultSet2.getInt("id"), publicKey);
+                return result > 0;
+            }
+
             return false;
         }
+
+        return false;
+    }
+
+    public boolean registerUser(String newUsername, String newPassword, String salt, String newEmail, String newPhone) {
+        String userId = generateUserId(newUsername, newPhone, newEmail);
+        int result = executeUpdateStatement(SQLQuery.INSERT_USER, userId, newUsername, newPassword, salt, newEmail, newPhone);
+
+        return result > 0;
+    }
+
+    public static String generateUserId(String username, String phone, String email) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            String input = username + phone + email;
+            byte[] hash = digest.digest(input.getBytes());
+            return Base64.getEncoder().encodeToString(hash);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public boolean insertPendingMessage(String userId, String userIdTaken, String json) {
+        int result = executeUpdateStatement(SQLQuery.INSERT_PENDING_MESSAGE, userId, userIdTaken, json);
+
+        return result > 0;
     }
 }

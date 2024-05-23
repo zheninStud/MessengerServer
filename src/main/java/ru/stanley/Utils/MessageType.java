@@ -26,11 +26,29 @@ public enum MessageType {
     REGUEST_FRIEND(
             "{\"type\":\"REGUEST_FRIEND\",\"data\":{\"userId\":\"\",\"publicKey\":\"\"}}"
     ),
+    REGUEST_FRIEND_CLIENT(
+            "{\"type\":\"REGUEST_FRIEND_CLIENT\",\"data\":{\"userId\":\"\",\"userName\":\"\",\"email\":\"\",\"phone\":\"\",\"publicKey\":\"\"}}"
+    ),
+    REGUEST_FRIEND_CLIENT_TAKEN_SERVER(
+            "{\"type\":\"REGUEST_FRIEND_CLIENT_TAKEN_SERVER\"}"
+    ),
+    REGUEST_FRIEND_CLIENT_TAKEN_CLIENT(
+            "{\"type\":\"REGUEST_FRIEND_CLIENT_TAKEN_CLIENT\", \"data\":{\"userId\":\"\"}}"
+    ),
+    REGUEST_FRIEND_SERVER(
+            "{\"type\":\"REGUEST_FRIEND_SERVER\"}"
+    ),
+    REGUEST_FRIEND_CLIENT_TAKEN(
+            "{\"type\":\"REGUEST_FRIEND_CLIENT_TAKEN\", \"data\":{\"userId\":\"\"}}"
+    ),
     CHAT_MESSAGE(
             "{\"type\":\"CHAT_MESSAGE\",\"data\":{\"sender\":\"\",\"recipient\":\"\",\"message\":\"\"}}"
     ),
     GET_USER(
             "{\"type\":\"GET_USER\",\"data\":{\"username\":\"\"}}"
+    ),
+    GET_USER_ID(
+            "{\"type\":\"GET_USER_ID\",\"data\":{\"userId\":\"\"}}"
     ),
     USER_SUCCESS(
             "{\"type\":\"USER_SUCCESS\",\"data\":{\"userId\":\"\",\"userName\":\"\",\"email\":\"\",\"phone\":\"\"}}"

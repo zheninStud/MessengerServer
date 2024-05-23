@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="df12b733-1238-4016-b828-cd136105bcec" name="Changes" comment="add hash auth and register">
+    <list default="true" id="df12b733-1238-4016-b828-cd136105bcec" name="Changes" comment="add dh">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/stanley/Manager/ClientManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/stanley/Database/DatabaseConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/stanley/Database/DatabaseConnection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/stanley/Hadlers/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/stanley/Hadlers/ClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/stanley/Utils/GOSTHashing.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/stanley/Utils/MessageType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/stanley/Utils/MessageType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/stanley/Utils/SQLQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/stanley/Utils/SQLQuery.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,6 +128,8 @@
       <workItem from="1716025347931" duration="14839000" />
       <workItem from="1716059587721" duration="220000" />
       <workItem from="1716060232026" duration="12822000" />
+      <workItem from="1716194745630" duration="18000" />
+      <workItem from="1716457858181" duration="9120000" />
     </task>
     <task id="LOCAL-00001" summary="two commit">
       <option name="closed" value="true" />
@@ -152,7 +155,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716061591126</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="add dh">
+      <option name="closed" value="true" />
+      <created>1716194759358</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1716194759358</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -162,7 +173,8 @@
     <MESSAGE value="two commit" />
     <MESSAGE value="three commit" />
     <MESSAGE value="add hash auth and register" />
-    <option name="LAST_COMMIT_MESSAGE" value="add hash auth and register" />
+    <MESSAGE value="add dh" />
+    <option name="LAST_COMMIT_MESSAGE" value="add dh" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/MessengerServer$Server.ic" NAME="Server Coverage Results" MODIFIED="1715770138970" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
