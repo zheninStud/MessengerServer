@@ -5,7 +5,7 @@ public enum SQLQuery {
     CREATE_TABLE_USER(
             "CREATE TABLE IF NOT EXISTS User (" +
                     "id INT AUTO_INCREMENT PRIMARY KEY," +
-                    "userId INT UNIQUE NOT NULL," +
+                    "userId VARCHAR(255) UNIQUE NOT NULL," +
                     "userName VARCHAR(255) UNIQUE NOT NULL," +
                     "passwordHash VARCHAR(255) NOT NULL," +
                     "salt VARCHAR(255) NOT NULL," +
@@ -36,7 +36,7 @@ public enum SQLQuery {
     ),
 
     INSERT_USER(
-            "INSERT INTO User (userId, userName, passwordHash, salt, email, phone) VALUES (?, ?, ?, ?, ?)"
+            "INSERT INTO User (userId, userName, passwordHash, salt, email, phone) VALUES (?, ?, ?, ?, ?, ?)"
     ),
 
     INSERT_USER_PUBLIC_KEY(

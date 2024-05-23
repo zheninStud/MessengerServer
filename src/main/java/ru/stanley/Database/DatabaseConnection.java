@@ -29,6 +29,8 @@ public class DatabaseConnection {
         System.out.println("Соединение с mysql базой данных установлено.");
 
         executeStatement(SQLQuery.CREATE_TABLE_USER);
+        executeStatement(SQLQuery.CREATE_TABLE_USER_PUBLIC_KEY);
+        executeStatement(SQLQuery.CREATE_TABLE_PENDING_MESSAGE);
     }
 
     public void disconnect() throws SQLException {
@@ -154,7 +156,7 @@ public class DatabaseConnection {
     public User isValidUser(String username, String passwordHash) throws SQLException {
         ResultSet resultSet = executeResultStatement(SQLQuery.SELECT_USER, username);
         if (resultSet.next()) {
-            String userId = String.valueOf(resultSet.getInt("userId"));
+            String userId = String.valueOf(resultSet.getString("userId"));
             String userName = resultSet.getString("userName");
             String dataPasswordHash = resultSet.getString("passwordHash");
             String email = resultSet.getString("email");
@@ -170,7 +172,7 @@ public class DatabaseConnection {
     public User searchUser(String username) throws SQLException {
         ResultSet resultSet = executeResultStatement(SQLQuery.SELECT_USER, username);
         if (resultSet.next()) {
-            String userId = String.valueOf(resultSet.getInt("userId"));
+            String userId = String.valueOf(resultSet.getString("userId"));
             String userName = resultSet.getString("userName");
             String email = resultSet.getString("email");
             String phone = resultSet.getString("phone");

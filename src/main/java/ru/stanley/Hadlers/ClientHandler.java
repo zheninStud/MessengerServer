@@ -122,6 +122,8 @@ public class ClientHandler extends Thread {
                             jsonMessage.getJSONObject("data").put("salt", salt);
 
                             out.println(outMessageType.createMessage(jsonMessage).toJSON());
+                        } else {
+                            out.println(new Message(MessageType.GET_SALT_FALSE.createJsonObject()).toJSON());
                         }
                         break;
                     case "GET_USER":

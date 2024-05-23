@@ -17,6 +17,9 @@ public enum MessageType {
     SET_SALT(
             "{\"type\":\"SET_SALT\",\"data\":{\"salt\":\"\"}}"
     ),
+    GET_SALT_FALSE(
+            "{\"type\":\"GET_SALT_FALSE\",}"
+    ),
     REGISTER_SUCCESS(
             "{\"type\":\"REGISTER_SUCCESS\"}"
     ),
