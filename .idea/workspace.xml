@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="df12b733-1238-4016-b828-cd136105bcec" name="Changes" comment="add full dh">
+    <list default="true" id="df12b733-1238-4016-b828-cd136105bcec" name="Changes" comment="fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/stanley/Database/DatabaseConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/stanley/Database/DatabaseConnection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/stanley/Hadlers/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/stanley/Hadlers/ClientHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/stanley/Utils/MessageType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/stanley/Utils/MessageType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/stanley/Utils/SQLQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/stanley/Utils/SQLQuery.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,12 +22,20 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="MessengerServer" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="MessengerServer" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
               </path>
             </expand>
             <select />
@@ -128,7 +134,7 @@
       <workItem from="1716059587721" duration="220000" />
       <workItem from="1716060232026" duration="12822000" />
       <workItem from="1716194745630" duration="18000" />
-      <workItem from="1716457858181" duration="14441000" />
+      <workItem from="1716457858181" duration="27081000" />
     </task>
     <task id="LOCAL-00001" summary="two commit">
       <option name="closed" value="true" />
@@ -178,7 +184,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716482134659</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="fix">
+      <option name="closed" value="true" />
+      <created>1716483878826</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1716483878826</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -191,7 +205,8 @@
     <MESSAGE value="add dh" />
     <MESSAGE value="add request dh" />
     <MESSAGE value="add full dh" />
-    <option name="LAST_COMMIT_MESSAGE" value="add full dh" />
+    <MESSAGE value="fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/MessengerServer$Server.ic" NAME="Server Coverage Results" MODIFIED="1715770138970" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">

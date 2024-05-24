@@ -142,6 +142,7 @@ public class ClientHandler extends Thread {
                         } else {
                             out.println(new Message(MessageType.USER_FAIL.createJsonObject()).toJSON());
                         }
+                        break;
                     case "REGUEST_FRIEND":
                         String userIdRequest = message.getData().getString("userId");
                         String publicKeyRequest = message.getData().getString("publicKey");
@@ -164,6 +165,7 @@ public class ClientHandler extends Thread {
 
                             client.sendMessage(outMessageType.createMessage(jsonMessage));
                         }
+                        break;
                     case "REGUEST_FRIEND_CLIENT_TAKEN":
                         String userIdTaken = message.getData().getString("userId");
 
@@ -181,7 +183,35 @@ public class ClientHandler extends Thread {
                         } else {
                             client.sendMessage(outMessageType.createMessage(jsonMessage));
                         }
+                        break;
+                    case "REGUEST_FRIEND_CLIENT_SUCCESS":
+                        String userIdClientSuccess = message.getData().getString("userId");
+                        String publicKeyClientSuccess = message.getData().getString("publicKey");
 
+                        client = ClientManager.getClient(userIdClientSuccess);
+
+                        outMessageType = MessageType.REGUEST_FRIEND_CLIENT_SUCCESS_CLIENT;
+                        jsonMessage = outMessageType.createJsonObject();
+
+                        jsonMessage.getJSONObject("data").put("userId", this.user.getUserId());
+                        jsonMessage.getJSONObject("data").put("publicKey", publicKeyClientSuccess);
+
+                        if (client == null) {
+                            if (database.insertPendingMessage(this.user.getUserId(), userIdClientSuccess, outMessageType.createMessage(jsonMessage).toJSON())) {
+
+                                MessageType outMessageType2 = MessageType.REGUEST_FRIEND_CLIENT_SUCCESS_SERVER;
+                                jsonMessage = outMessageType2.createJsonObject();
+
+                                jsonMessage.getJSONObject("data").put("userId", userIdClientSuccess);
+
+                                out.println(outMessageType2.createMessage(jsonMessage).toJSON());
+                            }
+                        } else {
+
+                            client.sendMessage(outMessageType.createMessage(jsonMessage));
+                        }
+
+                        break;
 
                 }
             }

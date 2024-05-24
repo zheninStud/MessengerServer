@@ -32,17 +32,29 @@ public enum MessageType {
     REGUEST_FRIEND_CLIENT(
             "{\"type\":\"REGUEST_FRIEND_CLIENT\",\"data\":{\"userId\":\"\",\"userName\":\"\",\"email\":\"\",\"phone\":\"\",\"publicKey\":\"\"}}"
     ),
+    REGUEST_FRIEND_SERVER(
+            "{\"type\":\"REGUEST_FRIEND_SERVER\"}"
+    ),
+    REGUEST_FRIEND_CLIENT_TAKEN(
+            "{\"type\":\"REGUEST_FRIEND_CLIENT_TAKEN\", \"data\":{\"userId\":\"\"}}"
+    ),
     REGUEST_FRIEND_CLIENT_TAKEN_SERVER(
             "{\"type\":\"REGUEST_FRIEND_CLIENT_TAKEN_SERVER\"}"
     ),
     REGUEST_FRIEND_CLIENT_TAKEN_CLIENT(
             "{\"type\":\"REGUEST_FRIEND_CLIENT_TAKEN_CLIENT\", \"data\":{\"userId\":\"\"}}"
     ),
-    REGUEST_FRIEND_SERVER(
-            "{\"type\":\"REGUEST_FRIEND_SERVER\"}"
+    REGUEST_FRIEND_CLIENT_SUCCESS(
+            "{\"type\":\"REGUEST_FRIEND_CLIENT_SUCCESS\",\"data\":{\"userId\":\"\",\"publicKey\":\"\"}}"
     ),
-    REGUEST_FRIEND_CLIENT_TAKEN(
-            "{\"type\":\"REGUEST_FRIEND_CLIENT_TAKEN\", \"data\":{\"userId\":\"\"}}"
+    REGUEST_FRIEND_CLIENT_SUCCESS_CLIENT(
+            "{\"type\":\"REGUEST_FRIEND_CLIENT_SUCCESS_CLIENT\",\"data\":{\"userId\":\"\",\"publicKey\":\"\"}}}"
+    ),
+    REGUEST_FRIEND_CLIENT_SUCCESS_SERVER(
+            "{\"type\":\"REGUEST_FRIEND_CLIENT_SUCCESS_SERVER\", \"data\":{\"userId\":\"\"}}}"
+    ),
+    REGUEST_FRIEND_CLIENT_DENY(
+            "{\"type\":\"REGUEST_FRIEND_CLIENT_DENY\", \"data\":{\"userId\":\"\"}}"
     ),
     CHAT_MESSAGE(
             "{\"type\":\"CHAT_MESSAGE\",\"data\":{\"sender\":\"\",\"recipient\":\"\",\"message\":\"\"}}"
