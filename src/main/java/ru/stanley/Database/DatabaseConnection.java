@@ -1,5 +1,7 @@
 package ru.stanley.Database;
 
+import ru.stanley.Hadlers.ClientHandler;
+import ru.stanley.Manager.ClientManager;
 import ru.stanley.Models.User;
 import ru.stanley.Server;
 import ru.stanley.Utils.SQLQuery;
@@ -241,9 +243,24 @@ public class DatabaseConnection {
         }
     }
 
-    public boolean insertPendingMessage(String userId, String userIdTaken, String json) {
-        int result = executeUpdateStatement(SQLQuery.INSERT_PENDING_MESSAGE, userId, userIdTaken, json);
+    public boolean insertPendingMessage(String userIdSender, String userIdReceiver, String json) {
+        int result = executeUpdateStatement(SQLQuery.INSERT_PENDING_MESSAGE, userIdSender, userIdReceiver, json);
 
         return result > 0;
+    }
+
+    public boolean selectPendingMessage(String userId) throws SQLException {
+        ResultSet resultSet = executeResultStatement(SQLQuery.SELECT_PENDING_MESSAGE, userId);
+
+        if (resultSet.next()){
+            String recipientId = resultSet.getString("recipientId");
+            String message = resultSet.getString("message");
+
+            ClientHandler client = ClientManager.getClient(recipientId);
+
+            client.sendMessage(message);
+        }
+
+        return false;
     }
 }

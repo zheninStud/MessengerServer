@@ -72,6 +72,7 @@ public class ClientHandler extends Thread {
                             jsonMessage.getJSONObject("data").put("phone", user.getPhone());
 
                             out.println(outMessageType.createMessage(jsonMessage).toJSON());
+                            checkPendingMessage(user.getUserId());
                         } else {
                             out.println(new Message(MessageType.AUTH_FAIL.createJsonObject()).toJSON());
                         }
@@ -212,6 +213,29 @@ public class ClientHandler extends Thread {
                         }
 
                         break;
+                    case "MESSAGE_SENT":
+                        String userIdSenderMessage = message.getData().getString("sender");
+                        String userIdReceiverMessage = message.getData().getString("recipient");
+                        String text = message.getData().getString("message");
+
+                        client = ClientManager.getClient(userIdReceiverMessage);
+
+                        outMessageType = MessageType.MESSAGE_SENT_CLIENT;
+                        jsonMessage = outMessageType.createJsonObject();
+
+                        jsonMessage.getJSONObject("data").put("sender", userIdSenderMessage);
+                        jsonMessage.getJSONObject("data").put("recipient", userIdReceiverMessage);
+                        jsonMessage.getJSONObject("data").put("message", text);
+
+                        if (client == null) {
+                            if (database.insertPendingMessage(userIdSenderMessage, userIdReceiverMessage, outMessageType.createMessage(jsonMessage).toJSON())) {
+
+                                out.println(new Message(MessageType.MESSAGE_SENT_SERVER.createJsonObject()).toJSON());
+                            }
+                        } else {
+
+                            client.sendMessage(outMessageType.createMessage(jsonMessage));
+                        }
 
                 }
             }
@@ -222,5 +246,9 @@ public class ClientHandler extends Thread {
         } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void checkPendingMessage(String userId) throws SQLException {
+        database.selectPendingMessage(userId);
     }
 }

@@ -56,9 +56,6 @@ public enum MessageType {
     REGUEST_FRIEND_CLIENT_DENY(
             "{\"type\":\"REGUEST_FRIEND_CLIENT_DENY\", \"data\":{\"userId\":\"\"}}"
     ),
-    CHAT_MESSAGE(
-            "{\"type\":\"CHAT_MESSAGE\",\"data\":{\"sender\":\"\",\"recipient\":\"\",\"message\":\"\"}}"
-    ),
     GET_USER(
             "{\"type\":\"GET_USER\",\"data\":{\"username\":\"\"}}"
     ),
@@ -73,6 +70,15 @@ public enum MessageType {
     ),
     DH_PUBLIC(
             "{\"type\":\"DH_PUBLIC\",\"data\":{\"userId\":\"\",\"publicKey\":\"\"}}"
+    ),
+    MESSAGE_SENT(
+            "{\"type\":\"MESSAGE_SENT\",\"data\":{\"sender\":\"\",\"recipient\":\"\",\"message\":\"\"}}"
+    ),
+    MESSAGE_SENT_CLIENT(
+            "{\"type\":\"MESSAGE_SENT_CLIENT\",\"data\":{\"sender\":\"\",\"recipient\":\"\",\"message\":\"\"}}"
+    ),
+    MESSAGE_SENT_SERVER(
+            "{\"type\":\"MESSAGE_SENT_SERVER\"}"
     ),
     AUTH_SUCCESS(
             "{\"type\":\"AUTH_SUCCESS\",\"data\":{\"userId\":\"\",\"userName\":\"\",\"email\":\"\",\"phone\":\"\"}}"
