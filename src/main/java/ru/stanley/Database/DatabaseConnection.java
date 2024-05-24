@@ -208,20 +208,10 @@ public class DatabaseConnection {
         return null;
     }
 
-    public boolean insertUserPublicKey(String userIdSender, String userIdReceiver, String publicKey) throws SQLException {
-        ResultSet resultSet = executeResultStatement(SQLQuery.SELECT_USER_WITH_USERID, userIdSender);
-        if (resultSet.next()) {
-            ResultSet resultSet2 = executeResultStatement(SQLQuery.SELECT_USER_WITH_USERID, userIdReceiver);
+    public boolean insertUserPublicKey(String userIdSender, String userIdReceiver, String message) throws SQLException {
+        int result = executeUpdateStatement(SQLQuery.INSERT_USER_PUBLIC_KEY, userIdSender, userIdReceiver, message);
 
-            if (resultSet2.next()) {
-                int result = executeUpdateStatement(SQLQuery.INSERT_USER_PUBLIC_KEY, resultSet.getInt("id"), resultSet2.getInt("id"), publicKey);
-                return result > 0;
-            }
-
-            return false;
-        }
-
-        return false;
+        return result > 0;
     }
 
     public boolean registerUser(String newUsername, String newPassword, String salt, String newEmail, String newPhone) {
@@ -249,10 +239,25 @@ public class DatabaseConnection {
         return result > 0;
     }
 
+    public boolean selectPublicKey(String userId) throws SQLException {
+        ResultSet resultSet = executeResultStatement(SQLQuery.SELECT_USER_PUBLIC_KEY, userId);
+
+        while (resultSet.next()) {
+            String recipientId = resultSet.getString("user_receiver");
+            String message = resultSet.getString("message");
+
+            ClientHandler client = ClientManager.getClient(recipientId);
+
+            client.sendMessage(message);
+        }
+
+        return false;
+    }
+
     public boolean selectPendingMessage(String userId) throws SQLException {
         ResultSet resultSet = executeResultStatement(SQLQuery.SELECT_PENDING_MESSAGE, userId);
 
-        if (resultSet.next()){
+        while (resultSet.next()) {
             String recipientId = resultSet.getString("recipientId");
             String message = resultSet.getString("message");
 

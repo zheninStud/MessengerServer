@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="df12b733-1238-4016-b828-cd136105bcec" name="Changes" comment="add gost encrypt">
+    <list default="true" id="df12b733-1238-4016-b828-cd136105bcec" name="Changes" comment="end version -&gt; testing">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/stanley/Database/DatabaseConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/stanley/Database/DatabaseConnection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/stanley/Hadlers/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/stanley/Hadlers/ClientHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ru/stanley/Utils/MessageType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/stanley/Utils/MessageType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ru/stanley/Utils/SQLQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/stanley/Utils/SQLQuery.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,7 +136,8 @@
       <workItem from="1716059587721" duration="220000" />
       <workItem from="1716060232026" duration="12822000" />
       <workItem from="1716194745630" duration="18000" />
-      <workItem from="1716457858181" duration="30119000" />
+      <workItem from="1716457858181" duration="43259000" />
+      <workItem from="1716559224070" duration="7961000" />
     </task>
     <task id="LOCAL-00001" summary="two commit">
       <option name="closed" value="true" />
@@ -201,7 +203,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716510257439</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="end version -&gt; testing">
+      <option name="closed" value="true" />
+      <created>1716540587849</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1716540587849</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -216,7 +226,8 @@
     <MESSAGE value="add full dh" />
     <MESSAGE value="fix" />
     <MESSAGE value="add gost encrypt" />
-    <option name="LAST_COMMIT_MESSAGE" value="add gost encrypt" />
+    <MESSAGE value="end version -&gt; testing" />
+    <option name="LAST_COMMIT_MESSAGE" value="end version -&gt; testing" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/MessengerServer$Server.ic" NAME="Server Coverage Results" MODIFIED="1715770138970" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">

@@ -67,12 +67,11 @@ public class ClientHandler extends Thread {
                             jsonMessage = outMessageType.createJsonObject();
 
                             jsonMessage.getJSONObject("data").put("userId", user.getUserId());
-                            jsonMessage.getJSONObject("data").put("username", user.getUserName());
+                            jsonMessage.getJSONObject("data").put("userName", user.getUserName());
                             jsonMessage.getJSONObject("data").put("email", user.getEmail());
                             jsonMessage.getJSONObject("data").put("phone", user.getPhone());
 
                             out.println(outMessageType.createMessage(jsonMessage).toJSON());
-                            checkPendingMessage(user.getUserId());
                         } else {
                             out.println(new Message(MessageType.AUTH_FAIL.createJsonObject()).toJSON());
                         }
@@ -135,7 +134,7 @@ public class ClientHandler extends Thread {
                             jsonMessage = outMessageType.createJsonObject();
 
                             jsonMessage.getJSONObject("data").put("userId", user.getUserId());
-                            jsonMessage.getJSONObject("data").put("username", user.getUserName());
+                            jsonMessage.getJSONObject("data").put("userName", user.getUserName());
                             jsonMessage.getJSONObject("data").put("email", user.getEmail());
                             jsonMessage.getJSONObject("data").put("phone", user.getPhone());
 
@@ -150,20 +149,25 @@ public class ClientHandler extends Thread {
 
                         client = ClientManager.getClient(userIdRequest);
 
+                        outMessageType = MessageType.REGUEST_FRIEND_CLIENT;
+                        jsonMessage = outMessageType.createJsonObject();
+
+                        jsonMessage.getJSONObject("data").put("userId", this.user.getUserId());
+                        jsonMessage.getJSONObject("data").put("userName", this.user.getUserName());
+                        jsonMessage.getJSONObject("data").put("email", this.user.getEmail());
+                        jsonMessage.getJSONObject("data").put("phone", this.user.getPhone());
+                        jsonMessage.getJSONObject("data").put("publicKey", publicKeyRequest);
+
                         if (client == null) {
-                            if (database.insertUserPublicKey(this.user.getUserId(), userIdRequest, publicKeyRequest)) {
-                                out.println(new Message(MessageType.REGUEST_FRIEND_SERVER.createJsonObject()).toJSON());
+                            if (database.insertUserPublicKey(this.user.getUserId(), userIdRequest, outMessageType.createMessage(jsonMessage).toJSON())) {
+                                MessageType outMessageType2 = MessageType.REGUEST_FRIEND_SERVER;
+                                JSONObject jsonMessage2 = outMessageType2.createJsonObject();
+
+                                jsonMessage2.getJSONObject("data").put("userId", userIdRequest);
+
+                                out.println(outMessageType2.createMessage(jsonMessage2).toJSON());
                             }
                         } else {
-                            outMessageType = MessageType.REGUEST_FRIEND_CLIENT;
-                            jsonMessage = outMessageType.createJsonObject();
-
-                            jsonMessage.getJSONObject("data").put("userId", this.user.getUserId());
-                            jsonMessage.getJSONObject("data").put("username", this.user.getUserName());
-                            jsonMessage.getJSONObject("data").put("email", this.user.getEmail());
-                            jsonMessage.getJSONObject("data").put("phone", this.user.getPhone());
-                            jsonMessage.getJSONObject("data").put("publicKey", publicKeyRequest);
-
                             client.sendMessage(outMessageType.createMessage(jsonMessage));
                         }
                         break;
@@ -201,11 +205,11 @@ public class ClientHandler extends Thread {
                             if (database.insertPendingMessage(this.user.getUserId(), userIdClientSuccess, outMessageType.createMessage(jsonMessage).toJSON())) {
 
                                 MessageType outMessageType2 = MessageType.REGUEST_FRIEND_CLIENT_SUCCESS_SERVER;
-                                jsonMessage = outMessageType2.createJsonObject();
+                                JSONObject jsonMessage2 = outMessageType2.createJsonObject();
 
-                                jsonMessage.getJSONObject("data").put("userId", userIdClientSuccess);
+                                jsonMessage2.getJSONObject("data").put("userId", userIdClientSuccess);
 
-                                out.println(outMessageType2.createMessage(jsonMessage).toJSON());
+                                out.println(outMessageType2.createMessage(jsonMessage2).toJSON());
                             }
                         } else {
 
@@ -236,7 +240,32 @@ public class ClientHandler extends Thread {
 
                             client.sendMessage(outMessageType.createMessage(jsonMessage));
                         }
+                        break;
+                    case "CHECK_MESSAGE":
+                        String userIdCheck = message.getData().getString("userId");
+                        checkPendingMessage(userIdCheck);
+                        checkPublicKey(userIdCheck);
+                        break;
+                    case "REGUEST_FRIEND_CLIENT_DENY":
+                        String userIdDeny = message.getData().getString("userId");
 
+                        client = ClientManager.getClient(userIdDeny);
+
+                        outMessageType = MessageType.REGUEST_FRIEND_CLIENT_DENY_CLIENT;
+                        jsonMessage = outMessageType.createJsonObject();
+
+                        jsonMessage.getJSONObject("data").put("userId", this.user.getUserId());
+
+                        if (client == null) {
+                            database.insertPendingMessage(this.user.getUserId(), userIdDeny, outMessageType.createMessage(jsonMessage).toJSON());
+                        } else {
+                            client.sendMessage(outMessageType.createMessage(jsonMessage));
+                        }
+                        break;
+                    case "DISCONNECT":
+                        ClientManager.removeClient(this.user.getUserId());
+                        clientSocket.close();
+                        break;
                 }
             }
 
@@ -246,6 +275,10 @@ public class ClientHandler extends Thread {
         } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void checkPublicKey(String userId) throws SQLException {
+        database.selectPublicKey(userId);
     }
 
     private void checkPendingMessage(String userId) throws SQLException {

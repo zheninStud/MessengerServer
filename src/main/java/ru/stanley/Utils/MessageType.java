@@ -11,6 +11,9 @@ public enum MessageType {
     REGISTER(
             "{\"type\":\"REGISTER\",\"data\":{\"username\":\"\",\"passwordHash\":\"\",\"salt\":\"\",\"email\":\"\",\"phone\":\"\"}}"
     ),
+    DISCONNECT(
+            "{\"type\":\"DISCONNECT\"}"
+    ),
     GET_SALT(
             "{\"type\":\"GET_SALT\",\"data\":{\"username\":\"\"}}"
     ),
@@ -18,7 +21,7 @@ public enum MessageType {
             "{\"type\":\"SET_SALT\",\"data\":{\"salt\":\"\"}}"
     ),
     GET_SALT_FALSE(
-            "{\"type\":\"GET_SALT_FALSE\",}"
+            "{\"type\":\"GET_SALT_FALSE\"}"
     ),
     REGISTER_SUCCESS(
             "{\"type\":\"REGISTER_SUCCESS\"}"
@@ -33,7 +36,7 @@ public enum MessageType {
             "{\"type\":\"REGUEST_FRIEND_CLIENT\",\"data\":{\"userId\":\"\",\"userName\":\"\",\"email\":\"\",\"phone\":\"\",\"publicKey\":\"\"}}"
     ),
     REGUEST_FRIEND_SERVER(
-            "{\"type\":\"REGUEST_FRIEND_SERVER\"}"
+            "{\"type\":\"REGUEST_FRIEND_SERVER\",\"data\":{\"userId\":\"\"}}"
     ),
     REGUEST_FRIEND_CLIENT_TAKEN(
             "{\"type\":\"REGUEST_FRIEND_CLIENT_TAKEN\", \"data\":{\"userId\":\"\"}}"
@@ -55,6 +58,9 @@ public enum MessageType {
     ),
     REGUEST_FRIEND_CLIENT_DENY(
             "{\"type\":\"REGUEST_FRIEND_CLIENT_DENY\", \"data\":{\"userId\":\"\"}}"
+    ),
+    REGUEST_FRIEND_CLIENT_DENY_CLIENT(
+            "{\"type\":\"REGUEST_FRIEND_CLIENT_DENY_CLIENT\", \"data\":{\"userId\":\"\"}}"
     ),
     GET_USER(
             "{\"type\":\"GET_USER\",\"data\":{\"username\":\"\"}}"
@@ -79,6 +85,9 @@ public enum MessageType {
     ),
     MESSAGE_SENT_SERVER(
             "{\"type\":\"MESSAGE_SENT_SERVER\"}"
+    ),
+    CHECK_MESSAGE(
+            "{\"type\":\"CHECK_MESSAGE\",\"data\":{\"userId\":\"\"}}"
     ),
     AUTH_SUCCESS(
             "{\"type\":\"AUTH_SUCCESS\",\"data\":{\"userId\":\"\",\"userName\":\"\",\"email\":\"\",\"phone\":\"\"}}"
