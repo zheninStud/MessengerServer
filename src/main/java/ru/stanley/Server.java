@@ -43,9 +43,16 @@ public class Server {
                 clientHandler.start();
             }
 
-
         } catch (IOException | NoSuchAlgorithmException | KeyStoreException | CertificateException | UnrecoverableKeyException | KeyManagementException e) {
             e.printStackTrace();
+        } finally {
+            if (databaseConnection != null) {
+                try {
+                    databaseConnection.disconnect();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

@@ -18,7 +18,6 @@ import java.sql.*;
 
 public class DatabaseConnection {
 
-    private static final Server application = Server.getInstance();
     private RowSetFactory factory;
     private Connection connection;
 
@@ -45,10 +44,6 @@ public class DatabaseConnection {
 
     public ResultSet executeResultStatement(SQLQuery sql, Object... params) {
         return executeStatement(sql.toString(), true, params);
-    }
-
-    public void executeBatchStatement(SQLQuery sql, Object[] array, Object... params) {
-        executeBatchStatement(sql.toString(), array, params);
     }
 
     public int executeUpdateStatement(SQLQuery sql, Object... params) {
@@ -104,31 +99,6 @@ public class DatabaseConnection {
         }
 
         return 0;
-    }
-
-    private void executeBatchStatement(String sql, Object[] array, Object... params) {
-
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            for (Object object : array) {
-                setParameters(statement, object, params);
-                statement.addBatch();
-            }
-
-            statement.executeBatch();
-
-        } catch (SQLException ex) {
-            System.out.println("Произошла ошибка SQL:");
-            System.out.println("SQL State: " + ex.getSQLState());
-            System.out.println("Error Code: " + ex.getErrorCode());
-            System.out.println("Message: " + ex.getMessage());
-            ex.printStackTrace();
-        } catch (NullPointerException ex) {
-            System.out.println("Произошла ошибка NullPointer:");
-            System.out.println("Message: " + ex.getMessage());
-            ex.printStackTrace();
-        }
-
     }
 
     private void setParameters(PreparedStatement statement, Object element, Object... params) throws SQLException {

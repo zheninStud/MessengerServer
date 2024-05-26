@@ -5,7 +5,6 @@ import ru.stanley.Hadlers.ClientHandler;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 public class ClientManager {
     private static final Map<String, ClientHandler> clients = new ConcurrentHashMap<>();
 

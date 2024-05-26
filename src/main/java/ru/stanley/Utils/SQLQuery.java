@@ -63,10 +63,6 @@ public enum SQLQuery {
             "SELECT * FROM User WHERE userName = ?"
     ),
 
-    SELECT_USER_WITH_USERID(
-            "SELECT * FROM User WHERE userId = ?"
-    ),
-
     SELECT_CHECK_NEWUSER_USERNAME(
             "SELECT * FROM User where userName = ?"
     ),
@@ -78,7 +74,6 @@ public enum SQLQuery {
     SELECT_CHECK_NEWUSER_EMAIL(
             "SELECT * FROM User where email = ?"
     );
-
 
     private final String mysql;
 
