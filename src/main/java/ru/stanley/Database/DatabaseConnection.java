@@ -21,7 +21,7 @@ public class DatabaseConnection {
     private RowSetFactory factory;
     private Connection connection;
 
-    private String url = "jdbc:mysql://localhost:3306/mydatabase";
+    private String url = "jdbc:mysql://rc1a-sai2vdt0388vx7ry.mdb.yandexcloud.net:3306/mydatabase?useSSL=true";
     private String user = "username";
     private String password = "password";
 

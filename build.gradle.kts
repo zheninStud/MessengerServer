@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 group = "ru.stanley"
@@ -19,4 +20,21 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+tasks.jar {
+    manifest {
+        attributes(
+            "Main-Class" to "ru.stanley.Server"
+        )
+    }
+}
+
+tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+    archiveClassifier.set("")
+    manifest {
+        attributes(
+            "Main-Class" to "ru.stanley.Server"
+        )
+    }
 }

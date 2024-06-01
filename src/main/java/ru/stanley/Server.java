@@ -33,8 +33,6 @@ public class Server {
             SSLServerSocket sslServerSocket = (SSLServerSocket) sslServerSocketFactory.createServerSocket(PORT);
             System.out.println("Сервер запущен на порту " + PORT);
 
-            databaseConnection.isUserExists("Stanley000");
-
             while (true) {
                 SSLSocket clientSocket = (SSLSocket) sslServerSocket.accept();
                 System.out.println("Новое подключение: " + clientSocket);
